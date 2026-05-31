@@ -33,11 +33,16 @@ app.get("/api/health", (req, res) => {
 });
 
 // Serve static frontend files
-app.use(express.static(path.join(__dirname, "../client/dist")));
+const distPath = path.join(__dirname, "../client/dist");
+app.use(express.static(distPath));
 
 // SPA fallback - serve index.html for all non-API routes
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  res.sendFile(path.join(distPath, "index.html"), (err) => {
+    if (err) {
+      res.status(404).send("Frontend build not found");
+    }
+  });
 });
 
 app.use((err, req, res, next) => {
