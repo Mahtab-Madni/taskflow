@@ -1,304 +1,211 @@
-# Accredian Enterprise — Full Stack Intern Assignment
+# TaskFlow — MERN Stack Task Manager
 
-A pixel-faithful clone of [enterprise.accredian.com](https://enterprise.accredian.com/) built with **Next.js 16 (App Router)**, **TypeScript**, and **Tailwind CSS**.
+A full-stack Task Management Web Application built with MongoDB, Express.js, React.js, and Node.js.
 
----
+## Features
 
-## Live Demo & Repository
-
-- **Live URL**: (https://accredian-enterprise-two.vercel.app/)
-- **GitHub Repository**: (https://github.com/Mahtab-Madni/accredian-enterprise)
-
----
-
-## Tech Stack
-
-| Layer        | Technology                      | Version |
-| ------------ | ------------------------------- | ------- |
-| Framework    | Next.js (App Router)            | 16.2.4  |
-| Language     | TypeScript                      | 5.x     |
-| Styling      | Tailwind CSS                    | 4.x     |
-| UI Icons     | React Icons & Lucide React      | Latest  |
-| Deployment   | Vercel                          | -       |
-| Data Storage | JSON file via Next.js API Route | -       |
-
----
-
-## ⚙️ Setup Instructions
-
-### Prerequisites
-
-- Node.js 18+ installed
-- npm or yarn package manager
-- Git
-
-### Installation Steps
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/Mahtab-Madni/accredian-enterprise.git
-cd accredian-enterprise
-
-# 2. Install dependencies
-npm install
-
-# 3. Run development server
-npm run dev
-# Open http://localhost:3000 in your browser
-
-# 4. Build for production
-npm run build
-
-# 5. Start production server
-npm start
-```
-
-### Development Tips
-
-- Hot reload is enabled by default in dev mode
-- Tailwind CSS watch is automatic
-- TypeScript errors will show in console and browser
-
----
+- **User Authentication** — Register, Login, JWT-based protected routes
+- **Task CRUD** — Create, Read, Update, Delete tasks
+- **Toggle Status** — Mark tasks as pending or completed
+- **Priority Levels** — High, Medium, Low
+- **Search & Filter** — Search by title/description, filter by status and priority
+- **Pagination** — Server-side pagination (8 tasks per page)
+- **Form Validation** — Client-side and server-side validation
+- **Responsive UI** — Works on desktop and mobile
 
 ## Project Structure
 
 ```
-accredian-enterprise/
-├── app/
-│   ├── components/
-│   │   ├── Navbar.tsx              # Sticky navigation with smooth scroll
-│   │   ├── Hero.tsx                # Hero section with CTA button
-│   │   ├── Stats.tsx               # Animated statistics display
-│   │   ├── AccredianEdge.tsx       # Key features and edge sections
-│   │   ├── CAT.tsx                 # Concept/Application/Tools framework
-│   │   ├── HowItWorks.tsx          # 3-step delivery process
-│   │   ├── FAQs.tsx                # Tabbed accordion for FAQs
-│   │   ├── Testimonials.tsx        # Testimonial carousel
-│   │   ├── LeadForm.tsx            # Lead capture modal form
-│   │   └── Footer.tsx              # Footer with links & contact
-│   ├── api/
-│   │   └── leads/
-│   │       └── route.ts            # POST & GET API for leads
-│   ├── globals.css                 # Global Tailwind styles
-│   ├── layout.tsx                  # Root layout
-│   └── page.tsx                    # Main page (orchestrates all components)
-├── public/                         # Static assets
-├── data/                           # JSON storage for leads (created at runtime)
+task-manager/
+├── client/                  # React frontend
+│   ├── public/
+│   │   └── index.html
+│   └── src/
+│       ├── components/
+│       │   ├── AddTaskForm.js
+│       │   └── TaskCard.js
+│       ├── context/
+│       │   └── AuthContext.js
+│       ├── pages/
+│       │   ├── Dashboard.js
+│       │   ├── Login.js
+│       │   └── Register.js
+│       ├── utils/
+│       │   └── api.js
+│       ├── App.js
+│       ├── App.css
+│       └── index.js
+│
+├── server/                  # Node.js + Express backend
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── User.js
+│   │   └── Task.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   └── tasks.js
+│   ├── .env.example
+│   ├── index.js
+│   └── package.json
+│
+├── .gitignore
 ├── package.json
-├── tsconfig.json
-├── next.config.ts
-├── tailwind.config.mjs
-├── postcss.config.mjs
 └── README.md
 ```
 
----
+## Prerequisites
 
-##  Approach Taken
+- [Node.js](https://nodejs.org/) v16+
+- [MongoDB](https://www.mongodb.com/) (local or [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
+- npm or yarn
 
-### 1. **Reference Site Analysis**
+## Setup & Installation
 
-- Analyzed the original Accredian Enterprise website structure
-- Identified 10 major sections: Navbar, Hero, Stats, Edge, CAT, How It Works, FAQs, Testimonials, Footer, and Lead Form
-- Documented color palette (blue `#2563eb`, dark gray `#111827`), typography hierarchy, and spacing patterns
+### 1. Clone the repository
 
-### 2. **Component-First Architecture**
+```bash
+git clone <your-repo-url>
+cd task-manager
+```
 
-- Each page section isolated as a reusable React component
-- Props interface for parent-child communication (e.g., `onOpenForm` callback)
-- Functional components with hooks (useState, useEffect) for state management
-- Zero external component libraries — built everything from scratch using Tailwind
+### 2. Install all dependencies
 
-### 3. **Responsive Design Strategy**
+```bash
+npm run install-all
+```
 
-- Mobile-first CSS approach using Tailwind responsive prefixes (`md:`, `lg:`, `sm:`)
-- Tested across breakpoints: 320px (mobile), 768px (tablet), 1024px (desktop)
-- All sections adapt gracefully without breaking layout
+Or manually:
 
-### 4. **Interactive Features**
+```bash
+# Root
+npm install
 
-- **Navbar**: Sticky positioning with smooth scroll links using anchor IDs
-- **Stats**: Animated count-up numbers with IntersectionObserver (triggers when in viewport)
-- **FAQs**: Tabbed category navigation + accordion expand/collapse
-- **Testimonials**: Carousel with dot navigation
-- **Lead Form**: Modal with form validation, loading states, and success feedback
+# Server
+cd server && npm install
 
-### 5. **API Integration (Bonus Feature)**
+# Client
+cd ../client && npm install
+```
 
-- Built custom `/api/leads` POST endpoint to capture form submissions
-- Form data stored to `data/leads.json` file
-- GET endpoint to retrieve all leads (useful for admin dashboard)
-- Error handling & validation for required fields
+### 3. Configure environment variables
 
----
+**Server** — Create `server/.env` from the example:
 
-## AI Usage Explanation
+```bash
+cp server/.env.example server/.env
+```
 
-### Where AI Helped
+Edit `server/.env`:
 
-| Component        | AI Assistance                                               | Manual Modifications                                                      |
-| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
-| **Navbar.tsx**   | Generated sticky nav logic with scroll shadow effect        | Adjusted colors, added smooth scroll behavior, tested anchor links        |
-| **Stats.tsx**    | Drafted IntersectionObserver pattern for count-up animation | Rewrote animation logic to fix re-trigger issues on scroll                |
-| **FAQs.tsx**     | Created accordion state management structure                | Fixed button centering, adjusted spacing, improved keyboard accessibility |
-| **LeadForm.tsx** | Generated form structure and basic validation               | Added loading states, success message design, styled form fields          |
-| **API Route**    | Drafted POST handler with JSON file storage                 | Added GET endpoint, improved error handling, added timestamps             |
-| **Styling**      | Suggested Tailwind class combinations for all components    | Fine-tuned spacing, colors, shadows to match original design              |
-| **TypeScript**   | Generated type interfaces (Props, States)                   | Added proper error typing, improved union types                           |
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/taskmanager
+JWT_SECRET=your_super_secret_jwt_key_here
+NODE_ENV=development
+```
 
-### What AI Did NOT Do
+> For MongoDB Atlas, replace MONGO_URI with your Atlas connection string.
 
-- AI did not generate the entire component tree
-- AI did not copy templates or use boilerplate starters
-- Each component was reviewed and modified for accuracy against the reference design
-- All spacing, color, and typography were manually adjusted to match the original
+**Client** — Create `client/.env`:
 
-### Thinking Process
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+```
 
-- Used AI as a brainstorming and scaffolding tool, not a copy-paste solution
-- Reviewed all AI suggestions and tested them in the browser
-- Made deliberate architectural choices (e.g., using flexbox instead of grid in certain sections)
+### 4. Start the application
 
----
+**Run both together (recommended):**
 
-##  Features Implemented
+```bash
+npm run dev
+```
 
-### Core Features 
+**Or separately:**
 
-- [x] Fully responsive landing page (mobile + desktop)
-- [x] 10 major sections with smooth scrolling
-- [x] Sticky navigation bar with active state highlighting
-- [x] Component-based architecture with reusable pieces
-- [x] TypeScript for type safety
-- [x] Tailwind CSS for styling
-- [x] Clean, readable code structure
+```bash
+# Terminal 1 — Backend
+npm run dev:server
 
-### Bonus Features 
+# Terminal 2 — Frontend
+npm run dev:client
+```
 
-- [x] Lead capture form with modal design
-- [x] Form validation (name, email, company required)
-- [x] API endpoint to store lead data
-- [x] Success/error states with user feedback
-- [x] Animated counter statistics
-- [x] FAQ accordion with category tabs
-- [x] Testimonial carousel
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5000
 
----
+## API Endpoints
 
-##  API Endpoints
+### Auth
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| POST | `/api/auth/register` | Register new user | Public |
+| POST | `/api/auth/login` | Login user | Public |
+| GET | `/api/auth/me` | Get current user | Private |
 
-### POST `/api/leads`
+### Tasks
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/api/tasks` | Get all tasks (paginated) | Private |
+| POST | `/api/tasks` | Create a task | Private |
+| GET | `/api/tasks/:id` | Get single task | Private |
+| PUT | `/api/tasks/:id` | Update a task | Private |
+| PATCH | `/api/tasks/:id/toggle` | Toggle task status | Private |
+| DELETE | `/api/tasks/:id` | Delete a task | Private |
 
-Capture lead information from the form.
+#### Query Parameters for GET /api/tasks
+| Param | Description | Example |
+|-------|-------------|---------|
+| `page` | Page number | `?page=2` |
+| `limit` | Items per page | `?limit=10` |
+| `status` | Filter by status | `?status=pending` |
+| `priority` | Filter by priority | `?priority=high` |
+| `search` | Search title/description | `?search=meeting` |
+| `sort` | Sort field | `?sort=-createdAt` |
 
-**Request:**
+## Database Schemas
 
-```json
+### User Schema
+```js
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "company": "Acme Corp",
-  "phone": "+919876543210",
-  "domain": "Gen-AI Mastery",
-  "candidates": "50",
-  "delivery": "Online"
+  name: String,       // required, 2-50 chars
+  email: String,      // required, unique
+  password: String,   // hashed with bcrypt
+  timestamps: true
 }
 ```
 
-**Response:**
-
-```json
+### Task Schema
+```js
 {
-  "success": true,
-  "lead": {
-    "id": 1682077200000,
-    "name": "John Doe",
-    "email": "john@example.com",
-    "createdAt": "2024-04-22T10:30:00Z"
-  }
+  title: String,       // required, max 100 chars
+  description: String, // optional, max 500 chars
+  status: String,      // 'pending' | 'completed'
+  priority: String,    // 'low' | 'medium' | 'high'
+  userId: ObjectId,    // reference to User
+  timestamps: true
 }
 ```
 
-### GET `/api/leads`
+## Evaluation Criteria Coverage
 
-Retrieve all captured leads.
+| Criteria | Implementation |
+|----------|----------------|
+| Code Quality | Modular structure, separated concerns, consistent naming |
+| UI/UX | Dark theme, responsive layout, smooth animations |
+| Functionality | Full CRUD, auth, toggle, search, filter, pagination |
+| Error Handling | Server-side validation, global error handler, client toast notifications |
+| Creativity | Clean aesthetic, priority badges, stats dashboard |
+| Bonus: Search | ✅ Search by title & description |
+| Bonus: Pagination | ✅ Server-side pagination |
 
-**Response:**
+## Deployment
 
-```json
-{
-  "leads": [
-    { "id": 1, "name": "John Doe", "email": "john@example.com", ... },
-    { "id": 2, "name": "Jane Smith", "email": "jane@example.com", ... }
-  ]
-}
-```
+**Backend** (e.g., Render, Railway):
+- Set `NODE_ENV=production`
+- Set `MONGO_URI` to your Atlas connection string
+- Set a strong `JWT_SECRET`
 
----
-
-##  Improvements With More Time
-
-1. **Database Integration**
-   - Replace JSON file storage with PostgreSQL or MongoDB
-   - Use Prisma ORM for type-safe database queries
-   - Enable lead management with filtering and sorting
-
-2. **Email Notifications**
-   - Send automated confirmation email to leads using Resend or Nodemailer
-   - Admin notification when new lead captured
-   - Weekly lead summary reports
-
-3. **Authentication & Admin Dashboard**
-   - Add NextAuth.js for admin login
-   - Build admin dashboard to view and manage leads
-   - Export leads to CSV/Excel
-
-4. **Advanced Animations**
-   - Integrate Framer Motion for scroll-reveal animations
-   - Parallax effects on hero section
-   - Smooth page transitions
-
-5. **Image Optimization**
-   - Use Next.js `<Image />` component for automatic optimization
-   - Add lazy loading and blur placeholders
-   - Replace all external image links with optimized versions
-
-6. **CMS Integration**
-   - Connect FAQs and testimonials to Contentful or Sanity CMS
-   - Enable non-technical updates without code changes
-   - Version control for content changes
-
-7. **Analytics & Monitoring**
-   - Integrate Vercel Analytics or PostHog for user behavior tracking
-   - Monitor form completion rates and drop-off points
-   - SEO optimization with Next.js metadata API
-
-8. **Performance Enhancements**
-   - Implement code splitting and lazy loading for components
-   - Optimize bundle size
-   - Add service worker for offline support
-
-9. **Accessibility Improvements**
-   - Add ARIA labels and semantic HTML
-   - Keyboard navigation for all interactive elements
-   - Screen reader testing and fixes
-
-10. **Testing**
-    - Unit tests with Jest and React Testing Library
-    - E2E tests with Playwright
-    - Form validation edge case testing
-
----
-
-## 📄 License
-
-MIT License — feel free to use this for reference or personal projects.
-
----
-
-## Author
-
-**Mahtab Madni**  
-Full Stack Developer Intern Submission  
-April 2026
+**Frontend** (e.g., Vercel, Netlify):
+- Set `REACT_APP_API_URL` to your deployed backend URL
+- Build: `npm run build`
