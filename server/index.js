@@ -1,9 +1,14 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import { connectDB, gracefulShutdown } from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/tasks.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -25,6 +30,14 @@ app.get("/api/health", (req, res) => {
     status: "Server is running",
     timestamp: new Date().toISOString(),
   });
+});
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+// SPA fallback - serve index.html for all non-API routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 app.use((err, req, res, next) => {
