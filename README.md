@@ -20,6 +20,7 @@ A full-stack Task Management Web Application built with MongoDB, Express.js, Rea
 ### Technology Stack
 
 **Frontend:**
+
 - React 19 with Vite for fast development and optimized builds
 - Tailwind CSS for utility-first styling
 - Axios for HTTP requests with automatic JWT token injection
@@ -27,6 +28,7 @@ A full-stack Task Management Web Application built with MongoDB, Express.js, Rea
 - React Hot Toast for notifications
 
 **Backend:**
+
 - Express.js for REST API
 - MongoDB with Mongoose ODM for data persistence
 - JWT (jsonwebtoken) for secure authentication
@@ -34,6 +36,7 @@ A full-stack Task Management Web Application built with MongoDB, Express.js, Rea
 - CORS for cross-origin requests
 
 **Deployment:**
+
 - Vercel for hosting (frontend served through backend)
 - MongoDB Atlas for cloud database
 
@@ -113,6 +116,7 @@ A full-stack Task Management Web Application built with MongoDB, Express.js, Rea
 ### Data Flow
 
 **Authentication Flow:**
+
 ```
 1. User submits login/register form
 2. Frontend sends request to /api/auth/login or /api/auth/register
@@ -123,6 +127,7 @@ A full-stack Task Management Web Application built with MongoDB, Express.js, Rea
 ```
 
 **Task Management Flow:**
+
 ```
 1. Frontend requests GET /api/tasks?page=1&status=pending
 2. Backend JWT middleware verifies token
@@ -210,12 +215,14 @@ cd taskflow
 ### Step 2: Install Dependencies
 
 #### Option A: Install all at once (from root)
+
 ```bash
 npm install
 cd client && npm install && cd ../server && npm install
 ```
 
 #### Option B: Install separately
+
 ```bash
 # Server dependencies
 cd server
@@ -230,7 +237,9 @@ cd ..
 ### Step 3: Configure Environment Variables
 
 #### Server Configuration
+
 Create `server/.env`:
+
 ```env
 PORT=5000
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/taskManager?retryWrites=true&w=majority
@@ -240,11 +249,13 @@ CLIENT_URL=http://localhost:5173
 ```
 
 To generate a secure JWT_SECRET:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 **MongoDB Setup:**
+
 1. Create free account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Create a cluster (free M0 tier is sufficient)
 3. Create a database user with password
@@ -253,7 +264,9 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 6. Add database name (`taskManager`) to the connection string
 
 #### Client Configuration
+
 Create `client/.env.production`:
+
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
@@ -263,6 +276,7 @@ For local development, the client will automatically use `http://localhost:5000/
 ### Step 4: Start the Application
 
 #### Option A: Run both frontend and backend concurrently
+
 ```bash
 # From root directory
 npm run dev
@@ -271,18 +285,21 @@ npm run dev
 #### Option B: Run separately (requires 2 terminals)
 
 **Terminal 1 — Start Backend:**
+
 ```bash
 cd server
 npm run dev
 ```
 
 **Terminal 2 — Start Frontend:**
+
 ```bash
 cd client
 npm run dev
 ```
 
 #### Access the Application
+
 - **Frontend**: [http://localhost:5173](http://localhost:5173)
 - **Backend API**: [http://localhost:5000](http://localhost:5000)
 - **Health Check**: [http://localhost:5000/api/health](http://localhost:5000/api/health)
@@ -290,6 +307,7 @@ npm run dev
 ## Production Build
 
 ### Build Frontend
+
 ```bash
 cd client
 npm run build
@@ -298,6 +316,7 @@ npm run build
 This creates an optimized build in `client/dist/` folder.
 
 ### Run Server in Production
+
 ```bash
 cd server
 npm start
@@ -308,36 +327,39 @@ The server will serve the pre-built frontend from `client/dist/`.
 ## API Endpoints
 
 ### Authentication Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/auth/register` | Create new user account | ❌ No |
-| POST | `/api/auth/login` | Authenticate and receive JWT | ❌ No |
-| GET | `/api/auth/me` | Get current authenticated user | ✅ Yes |
+
+| Method | Endpoint             | Description                    | Auth Required |
+| ------ | -------------------- | ------------------------------ | ------------- |
+| POST   | `/api/auth/register` | Create new user account        | ❌ No         |
+| POST   | `/api/auth/login`    | Authenticate and receive JWT   | ❌ No         |
+| GET    | `/api/auth/me`       | Get current authenticated user | ✅ Yes        |
 
 ### Task Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/tasks` | Get all user tasks (paginated) | ✅ Yes |
-| POST | `/api/tasks` | Create new task | ✅ Yes |
-| GET | `/api/tasks/:id` | Get specific task | ✅ Yes |
-| PUT | `/api/tasks/:id` | Update task details | ✅ Yes |
-| PATCH | `/api/tasks/:id/toggle` | Toggle task completion status | ✅ Yes |
-| DELETE | `/api/tasks/:id` | Delete task | ✅ Yes |
+
+| Method | Endpoint                | Description                    | Auth Required |
+| ------ | ----------------------- | ------------------------------ | ------------- |
+| GET    | `/api/tasks`            | Get all user tasks (paginated) | ✅ Yes        |
+| POST   | `/api/tasks`            | Create new task                | ✅ Yes        |
+| GET    | `/api/tasks/:id`        | Get specific task              | ✅ Yes        |
+| PUT    | `/api/tasks/:id`        | Update task details            | ✅ Yes        |
+| PATCH  | `/api/tasks/:id/toggle` | Toggle task completion status  | ✅ Yes        |
+| DELETE | `/api/tasks/:id`        | Delete task                    | ✅ Yes        |
 
 ### Query Parameters
 
 **GET /api/tasks** supports the following query parameters:
 
-| Parameter | Type | Description | Example |
-|-----------|------|-------------|---------|
-| `page` | number | Page number (1-indexed) | `?page=2` |
-| `limit` | number | Tasks per page | `?limit=10` |
-| `status` | string | Filter by status: `pending` or `completed` | `?status=completed` |
-| `priority` | string | Filter by priority: `low`, `medium`, or `high` | `?priority=high` |
-| `search` | string | Search in title and description | `?search=meeting` |
-| `sort` | string | Sort field with `-` for descending | `?sort=-createdAt` |
+| Parameter  | Type   | Description                                    | Example             |
+| ---------- | ------ | ---------------------------------------------- | ------------------- |
+| `page`     | number | Page number (1-indexed)                        | `?page=2`           |
+| `limit`    | number | Tasks per page                                 | `?limit=10`         |
+| `status`   | string | Filter by status: `pending` or `completed`     | `?status=completed` |
+| `priority` | string | Filter by priority: `low`, `medium`, or `high` | `?priority=high`    |
+| `search`   | string | Search in title and description                | `?search=meeting`   |
+| `sort`     | string | Sort field with `-` for descending             | `?sort=-createdAt`  |
 
 **Example Request:**
+
 ```bash
 GET /api/tasks?page=1&status=pending&priority=high&search=urgent&sort=-dueDate
 Authorization: Bearer <JWT_TOKEN>
@@ -346,6 +368,7 @@ Authorization: Bearer <JWT_TOKEN>
 ## Database Schemas
 
 ### User Schema
+
 ```javascript
 {
   _id: ObjectId,
@@ -358,6 +381,7 @@ Authorization: Bearer <JWT_TOKEN>
 ```
 
 ### Task Schema
+
 ```javascript
 {
   _id: ObjectId,
@@ -390,6 +414,7 @@ This project is configured for Vercel deployment with the following approach:
 #### Deployment Steps
 
 1. **Push to GitHub:**
+
    ```bash
    git add .
    git commit -m "Ready for deployment"
@@ -421,6 +446,7 @@ This project is configured for Vercel deployment with the following approach:
    - Check backend health: `<your-url>/api/health`
 
 #### How Deployment Works
+
 - When code is pushed, Vercel builds and deploys the server
 - Pre-built frontend files in `client/dist/` are included
 - Express serves frontend files + handles API requests
@@ -431,12 +457,14 @@ This project is configured for Vercel deployment with the following approach:
 ### Why this architecture?
 
 **Traditional approach (separate builds):**
+
 - Frontend deployed on Vercel static hosting
 - Backend deployed on Vercel serverless functions
 - Cross-origin (CORS) complexity
 - Separate deployment processes
 
 **Our approach (unified deployment):**
+
 - Single Node.js server deployment
 - Frontend built locally and committed to git
 - Backend serves both API and frontend files
@@ -446,6 +474,7 @@ This project is configured for Vercel deployment with the following approach:
 ### Build Process
 
 When code is pushed to GitHub:
+
 1. Vercel clones the repository
 2. Detects `server/index.js` as the application entry point
 3. Installs server dependencies
@@ -455,11 +484,13 @@ When code is pushed to GitHub:
 ### Local Development vs Production
 
 **Local (`npm run dev`):**
+
 - Frontend runs on `localhost:5173` (Vite dev server)
 - Backend runs on `localhost:5000`
 - Uses `client/.env` configuration
 
 **Production (Vercel):**
+
 - Frontend built and packaged into `client/dist/`
 - Backend serves frontend files + API
 - Single URL for entire application
@@ -468,23 +499,27 @@ When code is pushed to GitHub:
 ## Troubleshooting
 
 ### MongoDB Connection Issues
+
 - Verify connection string format
 - Check IP whitelist in MongoDB Atlas
 - Ensure database user credentials are correct
 - Test locally first before deploying
 
 ### Frontend Not Loading
+
 - Ensure `client/dist/` exists with built files
 - Check Express is serving static files correctly
 - Verify routes in `vercel.json`
 
 ### API Calls Failing
+
 - Check JWT token in browser localStorage
 - Verify `MONGO_URI` environment variable
 - Check server logs for error details
 - Ensure authentication middleware is working
 
 ### CORS Errors
+
 - Frontend and backend are same origin in production
 - CORS configuration only needed for local development
 - Check `CLIENT_URL` environment variable matches Vercel app URL
@@ -556,10 +591,12 @@ For issues or questions, please open a GitHub issue in the repository.
 ## Deployment
 
 **Backend** (e.g., Render, Railway):
+
 - Set `NODE_ENV=production`
 - Set `MONGO_URI` to your Atlas connection string
 - Set a strong `JWT_SECRET`
 
 **Frontend** (e.g., Vercel, Netlify):
+
 - Set `REACT_APP_API_URL` to your deployed backend URL
 - Build: `npm run build`
